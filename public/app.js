@@ -6,55 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const rssUrlInput = document.getElementById("rss-url");
   const addFeedButton = document.getElementById("add-feed");
   const feedContainer = document.getElementById("feed-container");
-  // const tagSearchInput = document.getElementById("tag-search");
-  // const ul = document.querySelector("ul");
-  // tagSearchInput.addEventListener("keyup", addTag);
-  // let tags = [];
-
-  // function remove(tag) {
-  //   let index = tags.indexOf(tag);
-  //   if (index > -1) {
-  //     tags.splice(index, 1);
-  //     createTag();
-  //   }
-  // }
-
-  // function createTag() {
-  //   ul.querySelectorAll("li").forEach((li) => li.remove());
-  //   tags
-  //     .slice()
-  //     .reverse()
-  //     .forEach((tag) => {
-  //       let liTag = document.createElement("li");
-  //       liTag.innerHTML = `
-  //               ${tag}<img
-  //                 src="xmark.svg"
-  //                 alt="remove tag"
-  //                 class="iconoir-xmark"
-  //               />
-  //             `;
-  //       liTag
-  //         .querySelector(".iconoir-xmark")
-  //         .addEventListener("click", () => remove(tag));
-  //       ul.insertAdjacentElement("afterbegin", liTag);
-  //     });
-  // }
-
-  // function addTag(e) {
-  //   if (e.key == "Enter") {
-  //     let tag = e.target.value.trim();
-  //     if (tag.length > 1 && !tags.includes(tag)) {
-  //       tag.split(",").forEach((tag) => {
-  //         tag = tag.trim();
-  //         if (tag.length > 1 && !tags.includes(tag)) {
-  //           tags.push(tag);
-  //         }
-  //       });
-  //       createTag();
-  //     }
-  //     e.target.value = "";
-  //   }
-  // }
 
   initializeTags("tag-search", "tag-list");
 
@@ -148,11 +99,6 @@ document.addEventListener("DOMContentLoaded", () => {
     displayFeed(filteredArticles);
   };
 
-  // tagSearchInput.addEventListener("input", () => {
-  //   const tag = tagSearchInput.value;
-  //   filterArticlesByTag(tag);
-  // });
-
   addFeedButton.addEventListener("click", async () => {
     const feedUrl = rssUrlInput.value;
     if (feedUrl) {
@@ -163,7 +109,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       //TODO: Handle errors if not feed found
     }
-    //rssUrlInput.value = "";
   });
 
   const sortArticles = () => {
