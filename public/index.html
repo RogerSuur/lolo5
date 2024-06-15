@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lolo v5</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Lolo v5</h1>
+      <!-- <input type="text" id="tag-search" placeholder="Search by tags" /> -->
+    </header>
+    <main>
+      <section id="user-actions">
+        <input type="text" id="rss-url" placeholder="Enter RSS feed URL" />
+        <button id="add-feed">Add Feed</button>
+      </section>
+      <section id="tag-selection">
+        <div class="wrapper">
+          <div class="title">
+            <img src="tag.svg" alt="tag-icon" />
+            <h2>Tags</h2>
+          </div>
+          <div class="content">
+            <!-- <p>Press enter or add a comma after each tag</p> -->
+            <ul id="tag-list">
+              <div class="input-container">
+                <input
+                  id="tag-search"
+                  type="text"
+                  placeholder="Press enter or add a comma after each tag"
+                />
+              </div>
+            </ul>
+          </div>
+          <div class="details">
+            <button>Remove all</button>
+          </div>
+        </div>
+      </section>
+      <section id="feed-container"></section>
+    </main>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

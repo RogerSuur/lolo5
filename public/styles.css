@@ -1,0 +1,140 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header {
+  background-color: #252525;
+  color: white;
+  width: 100%;
+  padding: 1rem;
+  text-align: center;
+}
+
+main {
+  width: 90%;
+  max-width: 800px;
+  margin: 1rem auto;
+}
+
+#feed-container {
+  margin-top: 2rem;
+}
+
+.article {
+  padding-bottom: 1.5rem;
+}
+
+/* ***** tags ***** */
+.wrapper {
+}
+
+.wrapper :where(.title, li, li img, .details) {
+  display: flex;
+  align-items: center;
+}
+
+.wrapper .title img {
+  max-width: 21px;
+}
+
+.wrapper .title h2 {
+  font-size: 21;
+  font-weight: 500;
+  margin-left: 8px;
+}
+
+.wrapper .content {
+  margin: 10px 0;
+}
+
+.content {
+  font-size: 15px;
+}
+
+.content ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  border: 1px solid #a6a6a6;
+  padding: 7px;
+  margin: 12px 0;
+  border-radius: 5px;
+}
+
+.content ul li {
+  list-style: none;
+  background-color: #f2f2f2;
+  padding: 5px 8px 5px 10px;
+  margin: 4px 3px;
+  border-radius: 5px;
+  border: 1px solid #e3f1e1;
+}
+
+.content ul li img {
+  height: 20px;
+  width: 20px;
+  font-size: 12px;
+  margin-left: 8px;
+  cursor: pointer;
+  color: #808080;
+  border-radius: 50%;
+  justify-content: center;
+  background: #dfdfdf;
+}
+
+.content ul .input-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.content ul .input-container input {
+  flex: 1;
+  outline: none;
+  border: none;
+  padding: 5px;
+  font-size: 16px;
+}
+
+.wrapper .details {
+  justify-content: space-between;
+}
+
+.details button {
+  border: none;
+  outline: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  background: #252525;
+}
+
+#user-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+#rss-url {
+  flex: 1;
+  margin-right: 0.5rem;
+  padding: 0.5rem;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
