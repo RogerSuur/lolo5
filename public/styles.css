@@ -1,10 +1,11 @@
 body {
   font-family: Arial, sans-serif;
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #f3f3f3;
 }
 
 header {
@@ -13,40 +14,83 @@ header {
   width: 100%;
   padding: 1rem;
   text-align: center;
+  box-shadow: 0 10px 50px 0 rgba(2, 0, 31, 0.3);
 }
 
 main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 90%;
-  max-width: 800px;
+  max-width: 80rem;
   margin: 1rem auto;
 }
 
 /*       ***** feed  *****        */
 
 #feed-container {
-  margin-top: 2rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 3em;
+  margin: 0 auto;
+  margin-top: 2em;
 }
 
 .article {
-  padding-bottom: 1.5rem;
+  display: grid;
+  position: relative;
+  grid-template-rows: auto 1fr;
+  /* background-color: #ffffff; */
+  box-shadow: 0 0 15px rgba(85, 85, 85, 1);
+  margin: 1em 0;
+  border-radius: 15px;
+}
+
+.article-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1em;
+}
+
+.article .read-more {
+  position: relative;
+  background-color: #dddddd;
+  text-align: center;
+  width: 7em;
+  border-radius: 5px;
+  padding: 0.6em 0.4em;
+  color: black;
+}
+
+.article:hover {
+  background-color: #f0f0f0;
 }
 
 .article-image {
   width: 100%;
-  height: auto;
+  height: 40vh;
+  border-radius: 15px 15px 0 0;
+  object-fit: cover;
   cursor: pointer;
 }
 
 .article-title {
   cursor: pointer;
+  font-weight: 600;
+  font-size: 20px;
+  color: #0b0028;
 }
 
 .article-description {
   cursor: pointer;
+  color: #6f6f6f;
+  text-align: justify;
 }
 
 .tags span {
-  background-color: #f2f2f2;
+  background-color: #dddddd;
   padding: 5px 8px 5px 10px;
   margin: 4px 3px;
   border-radius: 5px;
@@ -55,6 +99,9 @@ main {
 
 .tags {
   margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 /*       ***** modal  *****        */
@@ -97,26 +144,38 @@ main {
 }
 
 /*       ***** tags  *****        */
-.wrapper {
+#tag-selection {
+  display: flex;
+  margin-top: 1rem;
+  align-items: center;
+  width: 60%;
 }
 
-.wrapper :where(.title, li, li img, .details) {
+#tag-selection .title {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+#tag-selection :where(.title, li, li img, .details) {
   display: flex;
   align-items: center;
 }
 
-.wrapper .title img {
+#tag-selection .title img {
   max-width: 21px;
 }
 
-.wrapper .title h2 {
-  font-size: 21;
+#tag-selection .title h2 {
+  font-size: 21px;
   font-weight: 500;
   margin-left: 8px;
 }
 
-.wrapper .content {
-  margin: 10px 0;
+#tag-selection .content {
+  display: flex;
+  flex: 1;
+  margin: 0 1rem;
 }
 
 .content {
@@ -131,6 +190,7 @@ main {
   padding: 7px;
   margin: 12px 0;
   border-radius: 5px;
+  width: 100%;
 }
 
 .content ul li {
@@ -168,7 +228,7 @@ main {
   font-size: 16px;
 }
 
-.wrapper .details {
+#tag-selection .details {
   justify-content: space-between;
 }
 
@@ -183,14 +243,15 @@ main {
 }
 
 /*       ***** adding feed  *****        */
-
 #user-actions {
   display: flex;
   justify-content: space-between;
-  margin-top: 1rem;
+  margin-top: 2rem;
+  width: 60%;
 }
 
 #rss-url {
+  display: flex;
   flex: 1;
   margin-right: 0.5rem;
   padding: 0.5rem;
@@ -206,4 +267,10 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+@media only screen and (max-width: 768px) {
+  #feed-container {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }

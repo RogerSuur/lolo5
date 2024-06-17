@@ -86,7 +86,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const filterArticlesByTags = () => {
-    console.log("filterARticlesbytags");
     if (tags.length === 0) {
       displayFeed(allArticles);
       return;
