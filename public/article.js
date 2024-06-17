@@ -1,12 +1,10 @@
 export const createArticleElement = (article) => {
-  console.log(article);
   const articleElement = document.createElement("div");
   articleElement.classList.add("article");
 
-  let imageUrl = "default-image.jpg";
+  let imageUrl = article.image ? article.image : null;
 
   const tags = article.categories || [];
-  console.log("Logging tags:", tags);
   let tagsHtml = "";
 
   if (tags) {
@@ -18,16 +16,59 @@ export const createArticleElement = (article) => {
   }
 
   articleElement.innerHTML = `
-                <h2>${article.title}</h2>
-                <p>${article.contentSnippet}</p>
-                <img src="${imageUrl}" alt="Article Image">
+                <h2 class="article-title">${article.title}</h2>
+                <img src="${imageUrl}" class="article-image">
+                <p class="article-description">${article.contentSnippet}</p>
                 <p><small><em>Published: ${new Date(
                   article.pubDate
                 ).toLocaleString()}</em></small></p>
                   <div class="tags">${tagsHtml}</div>
-                <a href="${article.link}" target="_blank">Read more</a>
                 <hr>
             `;
+
+  const modal = document.getElementById("article-modal");
+  const modalBody = document.getElementById("modal-body");
+  const span = document.getElementsByClassName("close")[0];
+
+  const openModal = async () => {
+    const response = await fetch("http://localhost:3000/webparser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ url: article.link }),
+    });
+
+    const data = await response.json();
+    console.log(data.url);
+    modalBody.innerHTML = `
+                <h2>${data.title}</h2>
+                <p>${new Date(data.date_published).toLocaleString()}</p>
+                <div>${data.content}</div>
+              `;
+    modal.style.display = "block";
+  };
+
+  articleElement
+    .querySelector(".article-title")
+    .addEventListener("click", openModal);
+  articleElement
+    .querySelector(".article-description")
+    .addEventListener("click", openModal);
+  // articleElement.addEventListener("click", openModal);
+  articleElement
+    .querySelector(".article-image")
+    .addEventListener("click", openModal);
+
+  span.onclick = () => {
+    modal.style.display = "none";
+  };
+
+  window.onclick = (event) => {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  };
 
   return articleElement;
 };

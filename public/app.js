@@ -46,10 +46,17 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const addArticles = (feed, sourceUrl) => {
-    const articles = feed.items.map((item) => ({
-      ...item,
-      sourceUrl,
-    }));
+    const articles = feed.items.map((item) => {
+      const mediaContent = item["media:content"]
+        ? item["media:content"]["$"].url
+        : null;
+
+      return {
+        ...item,
+        sourceUrl,
+        image: mediaContent,
+      };
+    });
     allArticles.push(...articles);
     sortArticles();
   };
@@ -79,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const filterArticlesByTags = () => {
+    console.log("filterARticlesbytags");
     if (tags.length === 0) {
       displayFeed(allArticles);
       return;

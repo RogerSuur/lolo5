@@ -3,8 +3,16 @@ export let tags = [];
 export function initializeTags(tagSearchInputId, ulId) {
   const tagSearchInput = document.getElementById(tagSearchInputId);
   const ul = document.getElementById(ulId);
+  const removeTag = document.getElementById("remove-tags");
 
+  removeTag.addEventListener("click", removeAllTags);
   tagSearchInput.addEventListener("keyup", addTag);
+
+  function removeAllTags() {
+    tags = [];
+    ul.querySelectorAll("li").forEach((li) => li.remove());
+    dispatchTagChangeEvent();
+  }
 
   function remove(tag) {
     let index = tags.indexOf(tag);
