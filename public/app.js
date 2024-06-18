@@ -14,6 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const allArticles = [];
 
   //feeds to add:
+  //https://www.wired.com/feed/rss
+  //https://www.theguardian.com/world/rss
+
   // https://www.nasa.gov/rss/dyn/breaking_news.rss
   // https://techcrunch.com/feed/
 
@@ -47,14 +50,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const addArticles = (feed, sourceUrl) => {
     const articles = feed.items.map((item) => {
-      const mediaContent = item["media:content"]
-        ? item["media:content"]["$"].url
-        : null;
+      let imageUrl = null;
+      console.log(item);
+
+      if (item["media:content"] && item["media:content"].$.url) {
+        imageUrl = item["media:content"].$.url;
+      } else if (item["media:thumbnail"] && item["media:thumbnail"].$.url) {
+        imageUrl = item["media:thumbnail"].$.url;
+      } else if (item.enclosure && item.enclosure.url) {
+        imageUrl = item.enclosure.url;
+      } else if (item.image) {
+        imageUrl = item.image;
+      } else if (item.description) {
+        const doc = new DOMParser().parseFromString(
+          item.description,
+          "text/html"
+        );
+        const imgTag = doc.querySelector("img");
+        if (imgTag) {
+          imageUrl = imgTag.src;
+        }
+      }
 
       return {
         ...item,
         sourceUrl,
-        image: mediaContent,
+        image: imageUrl,
       };
     });
     allArticles.push(...articles);

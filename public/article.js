@@ -2,16 +2,18 @@ export const createArticleElement = (article) => {
   const articleElement = document.createElement("div");
   articleElement.classList.add("article");
 
-  let imageUrl =
-    article.image || article.lead_image_url || "default-image.jpeg";
+  let imageUrl = article.image || "default-image.jpeg";
 
   const tags = article.categories || [];
+  console.log(tags);
   let tagsHtml = "";
 
   if (tags) {
     for (const tag of tags) {
-      if (tag._) {
+      if (typeof tag == "object" && tag._) {
         tagsHtml += `<span class="tag">${tag._}</span> `;
+      } else if (typeof tag === "string") {
+        tagsHtml += `<span class="tag">${tag}</span> `;
       }
     }
   }
