@@ -6,17 +6,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const rssUrlInput = document.getElementById("rss-url");
   const addFeedButton = document.getElementById("add-feed");
   const feedContainer = document.getElementById("feed-container");
+  const currentFeedsList = document.getElementById("current-feeds");
+  const manageFeedsButton = document.getElementById("manage-feeds");
+  const dropdownContent = document.getElementById("dropdown-content");
+
+  // Fetch feeds from localStorage
+  const getFeeds = () => JSON.parse(localStorage.getItem("feeds")) || [];
+
+  // Save feeds to localStorage
+  const saveFeeds = (feeds) =>
+    localStorage.setItem("feeds", JSON.stringify(feeds));
 
   initializeTags("tag-search", "tag-list");
 
   const initialFeedUrl = "https://flipboard.com/@raimoseero/feed-nii8kd0sz.rss";
 
-  const allArticles = [];
+  let allArticles = [];
 
   //feeds to add:
   //https://www.wired.com/feed/rss
   //https://www.theguardian.com/world/rss
-
   // https://www.nasa.gov/rss/dyn/breaking_news.rss
   // https://techcrunch.com/feed/
 
@@ -33,13 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  const initialFeed = async () => {
-    const feed = await fetchNews(initialFeedUrl);
-    if (feed) {
-      addArticles(feed);
-    }
-  };
-
   const displayFeed = (articles) => {
     feedContainer.innerHTML = "";
     articles.forEach((article) => {
@@ -51,7 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const addArticles = (feed, sourceUrl) => {
     const articles = feed.items.map((item) => {
       let imageUrl = null;
-      console.log(item);
 
       if (item["media:content"] && item["media:content"].$.url) {
         imageUrl = item["media:content"].$.url;
@@ -83,10 +84,10 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const saveFeedUrl = (url) => {
-    const savedFeeds = JSON.parse(localStorage.getItem("feeds")) || [];
+    const savedFeeds = getFeeds();
     if (!savedFeeds.includes(url)) {
       savedFeeds.push(url);
-      localStorage.setItem("feeds", JSON.stringify(savedFeeds));
+      saveFeeds(savedFeeds);
     } else {
       //TODO: Handle feed already saved error
       console.error("Feed URL already saved.");
@@ -94,12 +95,17 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const loadFeeds = async () => {
-    const savedFeeds = JSON.parse(localStorage.getItem("feeds")) || [];
+    const savedFeeds = getFeeds();
+    if (!savedFeeds.includes(initialFeedUrl)) {
+      savedFeeds.push(initialFeedUrl);
+      saveFeeds(savedFeeds);
+    }
+    allArticles = [];
+    feedContainer.innerHTML = "";
     for (const url of savedFeeds) {
       const rssFeed = await fetchNews(url);
       if (rssFeed) {
-        addArticles(rssFeed);
-        // displayFeed(feed);
+        addArticles(rssFeed, url);
       } else {
         console.error(`Failed to load feed from ${url}`);
       }
@@ -107,6 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const filterArticlesByTags = () => {
+    console.log(allArticles);
     if (tags.length === 0) {
       displayFeed(allArticles);
       return;
@@ -116,10 +123,14 @@ document.addEventListener("DOMContentLoaded", () => {
       return (
         article.categories &&
         tags.some((tag) =>
-          article.categories.some(
-            (category) =>
-              category._ && category._.toLowerCase().includes(tag.toLowerCase())
-          )
+          article.categories.some((category) => {
+            if (typeof category === "object" && category._) {
+              return category._.toLowerCase().includes(tag.toLowerCase());
+            } else if (typeof category === "string") {
+              return category.toLowerCase().includes(tag.toLowerCase());
+            }
+            return false;
+          })
         )
       );
     });
@@ -129,15 +140,56 @@ document.addEventListener("DOMContentLoaded", () => {
 
   addFeedButton.addEventListener("click", async () => {
     const feedUrl = rssUrlInput.value;
-    if (feedUrl) {
+    const savedFeeds = getFeeds();
+    if (feedUrl && !savedFeeds.includes(feedUrl)) {
       const rssFeed = await fetchNews(feedUrl);
       if (rssFeed) {
         saveFeedUrl(feedUrl);
         addArticles(rssFeed, feedUrl);
+        rssUrlInput.value = "";
       }
-      //TODO: Handle errors if not feed found
+    } else {
+      console.error("Feed URL already saved or invalid.");
     }
+    //TODO: Handle errors if not feed found
   });
+
+  //Show/hide manage feeds section
+  manageFeedsButton.addEventListener("click", () => {
+    dropdownContent.classList.toggle("show");
+    displayFeedUrls();
+  });
+
+  // Display feeds in the list with delete buttons
+  const displayFeedUrls = () => {
+    currentFeedsList.innerHTML = "";
+    const feeds = getFeeds();
+    if (feeds.length === 0) {
+      const noFeedsMessage = document.createElement("li");
+      noFeedsMessage.textContent = "No feeds added yet.";
+      currentFeedsList.appendChild(noFeedsMessage);
+    } else {
+      feeds.forEach((feed) => {
+        const feedItem = document.createElement("li");
+        feedItem.textContent = feed;
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.addEventListener("click", () => deleteFeed(feed));
+        feedItem.appendChild(deleteButton);
+        currentFeedsList.appendChild(feedItem);
+      });
+    }
+  };
+
+  // Delete feed
+  const deleteFeed = async (feedUrl) => {
+    let feeds = getFeeds();
+    feeds = feeds.filter((feed) => feed !== feedUrl);
+    saveFeeds(feeds);
+    displayFeedUrls();
+    dropdownContent.classList.toggle("show");
+    await loadFeeds();
+  };
 
   const sortArticles = () => {
     const sortedArticles = allArticles.sort(
@@ -150,6 +202,5 @@ document.addEventListener("DOMContentLoaded", () => {
     filterArticlesByTags();
   });
 
-  initialFeed();
   loadFeeds();
 });

@@ -3,9 +3,9 @@ export const createArticleElement = (article) => {
   articleElement.classList.add("article");
 
   let imageUrl = article.image || "default-image.jpeg";
+  let articleSource = getSourceName(article.sourceUrl);
 
   const tags = article.categories || [];
-  console.log(tags);
   let tagsHtml = "";
 
   if (tags) {
@@ -19,7 +19,10 @@ export const createArticleElement = (article) => {
   }
 
   articleElement.innerHTML = `
-                <img src="${imageUrl}" alt="Article Image" class="article-image">
+                <div class="article-image-container">
+                  <div class="article-source">${articleSource}</div>
+                  <img src="${imageUrl}" alt="Article Image" class="article-image">
+                </div>
                 <div class="article-content">
                 <div class="article-title">${article.title}</div>
                 <p class="article-description">${article.contentSnippet}</p>
@@ -93,4 +96,10 @@ export const createArticleElement = (article) => {
   };
 
   return articleElement;
+};
+
+const getSourceName = (url) => {
+  const hostname = new URL(url).hostname;
+  const matches = hostname.match(/(?:www\.)?([^\.]+)\./);
+  return matches ? matches[1].toUpperCase() : hostname.toUpperCase();
 };
