@@ -2,6 +2,8 @@ import { createArticleElement } from "./article.js";
 
 import { initializeTags, tags } from "./tags.js";
 
+const port = process.env.PORT || 3000;
+
 document.addEventListener("DOMContentLoaded", () => {
   const rssUrlInput = document.getElementById("rss-url");
   const addFeedButton = document.getElementById("add-feed");
@@ -32,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const fetchNews = async (url) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/rss?url=${encodeURIComponent(url)}`
+        `https://lolo5.onrender.com/rss?url=${encodeURIComponent(url)}`
       );
       const data = await response.json();
       return data;
@@ -154,7 +156,6 @@ document.addEventListener("DOMContentLoaded", () => {
     //TODO: Handle errors if not feed found
   });
 
-  //Show/hide manage feeds section
   manageFeedsButton.addEventListener("click", () => {
     dropdownContent.classList.toggle("show");
     displayFeedUrls();
