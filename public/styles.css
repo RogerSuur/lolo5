@@ -169,6 +169,7 @@ main {
   z-index: 1;
   top: 0;
   width: 60%;
+  background-color: #f3f3f3;
 }
 
 #tag-selection .title {
