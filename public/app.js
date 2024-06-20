@@ -2,8 +2,6 @@ import { createArticleElement } from "./article.js";
 
 import { initializeTags, tags } from "./tags.js";
 
-const port = process.env.PORT || 3000;
-
 document.addEventListener("DOMContentLoaded", () => {
   const rssUrlInput = document.getElementById("rss-url");
   const addFeedButton = document.getElementById("add-feed");
