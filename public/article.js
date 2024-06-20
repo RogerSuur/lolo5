@@ -30,10 +30,6 @@ export const createArticleElement = (article) => {
                 <p><small><em>Published: ${new Date(
                   article.pubDate
                 ).toLocaleString()}</em></small></p>
-                <a class="read-more" href="${
-                  article.link
-                }" target="_blank">Read more</a>
-                </div>
             `;
 
   const modal = document.getElementById("article-modal");
@@ -63,7 +59,10 @@ export const createArticleElement = (article) => {
                     : ""
                 }
                 <div>${data.content}</div>
-                <a href="${data.url}" target="_blank">View article</a>
+                <a class="read-more" href="${
+                  article.link
+                }" target="_blank">Read more</a>
+                </div>
               `;
     } catch (error) {
       modalBody.innerHTML = `
