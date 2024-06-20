@@ -10,18 +10,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const manageFeedsButton = document.getElementById("manage-feeds");
   const dropdownContent = document.getElementById("dropdown-content");
 
-  // Fetch feeds from localStorage
-  const getFeeds = () => JSON.parse(localStorage.getItem("feeds")) || [];
+  const initialFeedUrl = "https://flipboard.com/@raimoseero/feed-nii8kd0sz.rss";
+  let allArticles = [];
 
-  // Save feeds to localStorage
+  const getFeeds = () => JSON.parse(localStorage.getItem("feeds")) || [];
   const saveFeeds = (feeds) =>
     localStorage.setItem("feeds", JSON.stringify(feeds));
 
   initializeTags("tag-search", "tag-list");
-
-  const initialFeedUrl = "https://flipboard.com/@raimoseero/feed-nii8kd0sz.rss";
-
-  let allArticles = [];
 
   //feeds to add:
   //https://www.wired.com/feed/rss
@@ -89,7 +85,6 @@ document.addEventListener("DOMContentLoaded", () => {
       savedFeeds.push(url);
       saveFeeds(savedFeeds);
     } else {
-      //TODO: Handle feed already saved error
       console.error("Feed URL already saved.");
     }
   };
@@ -150,7 +145,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       console.error("Feed URL already saved or invalid.");
     }
-    //TODO: Handle errors if not feed found
   });
 
   manageFeedsButton.addEventListener("click", () => {
@@ -158,7 +152,6 @@ document.addEventListener("DOMContentLoaded", () => {
     displayFeedUrls();
   });
 
-  // Display feeds in the list with delete buttons
   const displayFeedUrls = () => {
     currentFeedsList.innerHTML = "";
     const feeds = getFeeds();
@@ -179,7 +172,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Delete feed
   const deleteFeed = async (feedUrl) => {
     let feeds = getFeeds();
     feeds = feeds.filter((feed) => feed !== feedUrl);
