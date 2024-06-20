@@ -3,7 +3,7 @@ const app = express();
 import fetch from "node-fetch";
 import Parser from "rss-parser";
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 const parser = new Parser({
   customFields: {
     item: [
